@@ -59,6 +59,7 @@
             // 
             // MainTextBox
             // 
+            this.MainTextBox.AcceptsTab = true;
             this.MainTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.MainTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainTextBox.Location = new System.Drawing.Point(27, 0);
@@ -66,10 +67,12 @@
             this.MainTextBox.Size = new System.Drawing.Size(258, 160);
             this.MainTextBox.TabIndex = 0;
             this.MainTextBox.Text = "";
+            this.MainTextBox.WordWrap = false;
             this.MainTextBox.SelectionChanged += new System.EventHandler(this.MainTextBox_SelectionChanged);
             this.MainTextBox.VScroll += new System.EventHandler(this.MainTextBox_VScroll);
             this.MainTextBox.FontChanged += new System.EventHandler(this.MainTextBox_FontChanged);
             this.MainTextBox.TextChanged += new System.EventHandler(this.MainTextBox_TextChanged);
+            this.MainTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainTextBox_KeyDown);
             this.MainTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainTextBox_MouseDown);
             // 
             // LineNumbers

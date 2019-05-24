@@ -36,9 +36,14 @@
             this.OpenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.CloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CloseAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DarkModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BottomToolStrip = new System.Windows.Forms.ToolStrip();
             this.TextLengthLabel = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -55,9 +60,6 @@
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.Runtime = new System.Windows.Forms.Timer(this.components);
             this.TabbedNotepad = new System.Windows.Forms.TabControl();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.CloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.CloseAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.BottomToolStrip.SuspendLayout();
             this.TopToolStrip.SuspendLayout();
@@ -68,7 +70,8 @@
             this.MenuStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.editToolStripMenuItem});
+            this.editToolStripMenuItem,
+            this.settingsToolStripMenuItem});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
             this.MenuStrip.Size = new System.Drawing.Size(800, 24);
@@ -126,6 +129,30 @@
             this.SaveAsToolStripMenuItem.ToolTipText = "Save As";
             this.SaveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(194, 6);
+            // 
+            // CloseToolStripMenuItem
+            // 
+            this.CloseToolStripMenuItem.Name = "CloseToolStripMenuItem";
+            this.CloseToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.CloseToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.CloseToolStripMenuItem.Text = "Close";
+            this.CloseToolStripMenuItem.ToolTipText = "Close";
+            this.CloseToolStripMenuItem.Click += new System.EventHandler(this.CloseToolStripMenuItem_Click);
+            // 
+            // CloseAllToolStripMenuItem
+            // 
+            this.CloseAllToolStripMenuItem.Name = "CloseAllToolStripMenuItem";
+            this.CloseAllToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.W)));
+            this.CloseAllToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.CloseAllToolStripMenuItem.Text = "Close All";
+            this.CloseAllToolStripMenuItem.ToolTipText = "Close All";
+            this.CloseAllToolStripMenuItem.Click += new System.EventHandler(this.CloseAllToolStripMenuItem_Click);
+            // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -141,6 +168,7 @@
             this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
             this.undoToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.undoToolStripMenuItem.Text = "Undo";
+            this.undoToolStripMenuItem.Click += new System.EventHandler(this.UndoToolStripMenuItem_Click);
             // 
             // redoToolStripMenuItem
             // 
@@ -149,6 +177,23 @@
             | System.Windows.Forms.Keys.Z)));
             this.redoToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.redoToolStripMenuItem.Text = "Redo";
+            this.redoToolStripMenuItem.Click += new System.EventHandler(this.RedoToolStripMenuItem_Click);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.DarkModeToolStripMenuItem});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // DarkModeToolStripMenuItem
+            // 
+            this.DarkModeToolStripMenuItem.Enabled = false;
+            this.DarkModeToolStripMenuItem.Name = "DarkModeToolStripMenuItem";
+            this.DarkModeToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.DarkModeToolStripMenuItem.Text = "Dark Mode";
+            this.DarkModeToolStripMenuItem.Click += new System.EventHandler(this.DarkModeToolStripMenuItem_Click_1);
             // 
             // BottomToolStrip
             // 
@@ -298,30 +343,6 @@
             this.TabbedNotepad.TabIndexChanged += new System.EventHandler(this.TabbedNotepad_TabIndexChanged);
             this.TabbedNotepad.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TabbedNotepad_MouseDown);
             // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(194, 6);
-            // 
-            // CloseToolStripMenuItem
-            // 
-            this.CloseToolStripMenuItem.Name = "CloseToolStripMenuItem";
-            this.CloseToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-            this.CloseToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
-            this.CloseToolStripMenuItem.Text = "Close";
-            this.CloseToolStripMenuItem.ToolTipText = "Close";
-            this.CloseToolStripMenuItem.Click += new System.EventHandler(this.CloseToolStripMenuItem_Click);
-            // 
-            // CloseAllToolStripMenuItem
-            // 
-            this.CloseAllToolStripMenuItem.Name = "CloseAllToolStripMenuItem";
-            this.CloseAllToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.W)));
-            this.CloseAllToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
-            this.CloseAllToolStripMenuItem.Text = "Close All";
-            this.CloseAllToolStripMenuItem.ToolTipText = "Close All";
-            this.CloseAllToolStripMenuItem.Click += new System.EventHandler(this.CloseAllToolStripMenuItem_Click);
-            // 
             // SimpleNotepad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -329,8 +350,8 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.TabbedNotepad);
             this.Controls.Add(this.TopToolStrip);
-            this.Controls.Add(this.BottomToolStrip);
             this.Controls.Add(this.MenuStrip);
+            this.Controls.Add(this.BottomToolStrip);
             this.MainMenuStrip = this.MenuStrip;
             this.Name = "SimpleNotepad";
             this.Text = "SimpleNotepad";
@@ -376,6 +397,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem CloseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CloseAllToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DarkModeToolStripMenuItem;
     }
 }
 

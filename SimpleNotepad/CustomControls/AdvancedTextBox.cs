@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SimpleNotepad.CustomControls
 {
     public partial class AdvancedTextBox : UserControl
     {
+        public bool isTextSaved = true;
+        string snapshot_MD5 = "";
+
         public AdvancedTextBox()
         {
             InitializeComponent();
@@ -19,9 +19,41 @@ namespace SimpleNotepad.CustomControls
             LineNumbers.Font = MainTextBox.Font;
             MainTextBox.Select();
             UpdateLineNumbers();
+            CreateSnapshotOfText();
         }
 
-        public bool isTextSaved = true;
+        public void CreateSnapshotOfText()
+        {
+            using (MD5 md5Hash = MD5.Create())
+            {
+                byte[] bytes = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(MainTextBox.Text));
+
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                snapshot_MD5 = builder.ToString();
+            }
+        }
+
+        public bool DoesCurrentTextEqualSnapshot()
+        {
+            string current_MD5 = "";
+            using (MD5 md5Hash = MD5.Create())
+            {
+                byte[] bytes = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(MainTextBox.Text));
+
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                current_MD5 = builder.ToString();
+            }
+
+            return (current_MD5 == snapshot_MD5);
+        }
 
         [Description("The lines of text"), Category("Appearance"), Browsable(true), Bindable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible), EditorBrowsable(EditorBrowsableState.Always)]
@@ -54,6 +86,16 @@ namespace SimpleNotepad.CustomControls
         public void Select(int start, int length)
         {
             MainTextBox.Select(start, length);
+        }
+
+        public void Undo()
+        {
+            MainTextBox.Undo();
+        }
+
+        public void Redo()
+        {
+            MainTextBox.Redo();
         }
 
         public int TextLength
@@ -129,7 +171,7 @@ namespace SimpleNotepad.CustomControls
         {
             if (MainTextBox.Text == "") UpdateLineNumbers();
 
-            isTextSaved = false;
+            isTextSaved = DoesCurrentTextEqualSnapshot();
         }
 
         private void MainTextBox_FontChanged(object sender, EventArgs e)
@@ -145,5 +187,16 @@ namespace SimpleNotepad.CustomControls
             LineNumbers.DeselectAll();
         }
 
+        private void MainTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            RichTextBox rtb = (RichTextBox)sender;
+            if (e.KeyCode == Keys.Space)
+            {
+                this.SuspendLayout();
+                rtb.Undo();
+                rtb.Redo();
+                this.ResumeLayout();
+            }
+        }
     }
 }

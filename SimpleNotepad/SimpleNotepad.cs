@@ -32,7 +32,7 @@ namespace SimpleNotepad
             NotepadPage notepadPage;
 
             if (notepadPages.Count > 0 && !String.IsNullOrWhiteSpace(notepadPages[notepadPages.Count - 1].Text))
-                notepadPage = new NotepadPage(ref TabbedNotepad, String.Format("New {0}", notepadPages.Count));
+                notepadPage = new NotepadPage(ref TabbedNotepad, String.Format("New {0}", notepadPages.Count + 1));
             else
                 notepadPage = notepadPages[notepadPages.Count - 1];
 
@@ -45,37 +45,69 @@ namespace SimpleNotepad
 
         private void New()
         {
-            NotepadPage notePadPage = new NotepadPage(ref TabbedNotepad, String.Format("New {0}", notepadPages.Count));
+            NotepadPage notePadPage = new NotepadPage(ref TabbedNotepad, String.Format("New {0}", notepadPages.Count + 1));
             notepadPages.Add(notePadPage);
             notePadPage.Focus();
         }
 
-        private void CloseTabAt(int index)
+        private bool CloseTabAt(int index)
         {
+            bool ret = false;
             try
             {
                 if (notepadPages[index].Saved)
                 {
-                    notepadPages.RemoveAt(index);
-                    TabbedNotepad.TabPages.RemoveAt(index);
+                    if (!String.IsNullOrEmpty(notepadPages[index].Text))
+                    {
+                        notepadPages.RemoveAt(index);
+                        TabbedNotepad.TabPages.RemoveAt(index);
+                        ret = true;
+                    }
                 }
                 else
                 {
-                    DialogResult diagResult = MessageBox.Show("Are you want to close this tab without saving?", "Close without saving?", MessageBoxButtons.YesNoCancel);
+                    DialogResult diagResult = MessageBox.Show(String.Format("Are you want to close '{0}' without saving?", notepadPages[index].GetFileName()), "Close without saving?", MessageBoxButtons.YesNoCancel);
 
                     if (diagResult == DialogResult.Yes)
                     {
                         notepadPages.RemoveAt(index);
                         TabbedNotepad.TabPages.RemoveAt(index);
+                        ret = true;
                     }
                     else if (diagResult == DialogResult.No && notepadPages[index].Save())
                     {
                         notepadPages.RemoveAt(index);
                         TabbedNotepad.TabPages.RemoveAt(index);
+                        ret = true;
                     }
+
+                    if (TabbedNotepad.TabPages.Count == 0) New();
                 }
             }
             catch { }
+
+            return ret;
+        }
+
+        private bool CloseAllTabs()
+        {
+            bool didAllClose = true;
+            NotepadPage[] tempPages = new NotepadPage[notepadPages.Count];
+            notepadPages.CopyTo(tempPages);
+
+            foreach (NotepadPage npPage in tempPages)
+            {
+                if (!CloseTabAt(notepadPages.IndexOf(npPage)) && !npPage.Saved)
+                {
+                    didAllClose = false;
+                }
+            }
+            return didAllClose;
+        }
+
+        private void ChangeColourScheme()
+        {
+
         }
 
         private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -100,13 +132,15 @@ namespace SimpleNotepad
 
         private void CloseAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            CloseAllTabs();
         }
 
         private void Runtime_Tick(object sender, EventArgs e)
         {
             try
             {
+                if (notepadPages.Count == 0) New();
+
                 TextLengthLabel.Text = "Length: " + notepadPages[TabbedNotepad.SelectedIndex].Text.Length;
                 LineTotalLabel.Text = "Lines: " + notepadPages[TabbedNotepad.SelectedIndex].Lines.Length;
 
@@ -115,14 +149,29 @@ namespace SimpleNotepad
                 {
                     SavedLabel.Text = "Saved: True";
 
-                    TabTitle = notepadPages[TabbedNotepad.SelectedIndex].GetFileName();
+                    try
+                    {
+                        TabTitle = notepadPages[TabbedNotepad.SelectedIndex].GetFileName().Substring(0, 11).TrimEnd(' ') + "...";
+                    }
+                    catch
+                    {
+                        TabTitle = notepadPages[TabbedNotepad.SelectedIndex].GetFileName();
+                    }
+
                     TabToolTip = notepadPages[TabbedNotepad.SelectedIndex].GetFileName();
                 }
                 else
                 {
                     SavedLabel.Text = "Saved: False";
 
-                    TabTitle = "(*) " + notepadPages[TabbedNotepad.SelectedIndex].GetFileName();
+                    try
+                    {
+                        TabTitle = ("(*) " + notepadPages[TabbedNotepad.SelectedIndex].GetFileName()).Substring(0, 11).TrimEnd(' ') + "...";
+                    }
+                    catch
+                    {
+                        TabTitle = ("(*) " + notepadPages[TabbedNotepad.SelectedIndex].GetFileName());
+                    }
                     TabToolTip = "(Unsaved) " + notepadPages[TabbedNotepad.SelectedIndex].GetFileName();
                 }
 
@@ -199,6 +248,40 @@ namespace SimpleNotepad
         {
             CloseToolStripMenuItem_Click(sender, e);
         }
+
+        private void DarkModeToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            DarkModeToolStripMenuItem.Checked = !DarkModeToolStripMenuItem.Checked;
+
+            if (DarkModeToolStripMenuItem.Checked)
+            {
+
+            }
+            else
+            {
+
+            }
+        }
+
+        private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            notepadPages[TabbedNotepad.SelectedIndex].Undo();
+        }
+
+        private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            notepadPages[TabbedNotepad.SelectedIndex].Redo();
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+
+            if (e.CloseReason == CloseReason.WindowsShutDown) return;
+
+            if (!CloseAllTabs())
+                e.Cancel = true;
+        }
     }
 
     public class NotepadPage
@@ -208,6 +291,8 @@ namespace SimpleNotepad
         private AdvancedTextBox _advandedTextBox;
 
         private string _fileName, _filePath;
+
+        private const int MaxTabTitleLength = 11;
 
         public NotepadPage(ref TabControl tabControl, string fileName, bool switchToNewTab = true, string filePath = null)
         {
@@ -219,8 +304,18 @@ namespace SimpleNotepad
             _advandedTextBox.Dock = DockStyle.Fill;
 
             _tabPage = new TabPage();
-            _tabPage.Text = _fileName;
+
+            if (_fileName.Length > (MaxTabTitleLength + 3))
+            {
+                _tabPage.Text = _fileName.Substring(0, MaxTabTitleLength).TrimEnd(' ') + "...";
+            }
+            else
+            {
+                _tabPage.Text = _fileName;
+            }
+
             _tabPage.ToolTipText = _fileName;
+
             _tabPage.Controls.Add(_advandedTextBox);
 
             _tabControl.Controls.Add(_tabPage);
@@ -246,6 +341,16 @@ namespace SimpleNotepad
             return _advandedTextBox.Focus();
         }
 
+        public void Undo()
+        {
+            _advandedTextBox.Undo();
+        }
+
+        public void Redo()
+        {
+            _advandedTextBox.Redo();
+        }
+
         public string TabTitle
         {
             get
@@ -254,7 +359,14 @@ namespace SimpleNotepad
             }
             set
             {
-                _tabPage.Text = value;
+                if (value.Length > (MaxTabTitleLength + 3))
+                {
+                    _tabPage.Text = value.Substring(0, MaxTabTitleLength).TrimEnd(' ') + "...";
+                }
+                else
+                {
+                    _tabPage.Text = value;
+                }
             }
         }
 
@@ -311,7 +423,10 @@ namespace SimpleNotepad
             if (!String.IsNullOrEmpty(_filePath))
             {
                 File.WriteAllLines(_filePath, _advandedTextBox.Lines);
-                Saved = true;
+
+                _advandedTextBox.CreateSnapshotOfText();
+                Saved = _advandedTextBox.DoesCurrentTextEqualSnapshot();
+
                 return true;
             }
             else
@@ -336,7 +451,9 @@ namespace SimpleNotepad
 
                 File.WriteAllLines(_filePath, _advandedTextBox.Lines);
 
-                Saved = true;
+                _advandedTextBox.CreateSnapshotOfText();
+                Saved = _advandedTextBox.DoesCurrentTextEqualSnapshot();
+
                 return true;
             }
             else return false;
@@ -352,16 +469,17 @@ namespace SimpleNotepad
             {
                 _fileName = openFileDiag.SafeFileName;
                 _filePath = openFileDiag.FileName;
-                _tabPage.Text = _fileName;
-                _tabPage.ToolTipText = _fileName;
+                TabTitle = _fileName;
+                TabToolTip = _fileName;
 
                 _tabControl.Refresh();
 
                 _advandedTextBox.Lines = File.ReadAllLines(_filePath);
                 _advandedTextBox.Select(_advandedTextBox.TextLength, 0);
+                _advandedTextBox.CreateSnapshotOfText();
                 Focus();
 
-                Saved = true;
+                Saved = _advandedTextBox.DoesCurrentTextEqualSnapshot();
                 return true;
             }
             else return false;
