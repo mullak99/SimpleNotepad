@@ -39,6 +39,8 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.CloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CloseAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.ExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,8 +58,6 @@
             this.SaveToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.SaveAsToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.CloseToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.Runtime = new System.Windows.Forms.Timer(this.components);
             this.TabbedNotepad = new System.Windows.Forms.TabControl();
             this.MenuStrip.SuspendLayout();
@@ -87,7 +87,9 @@
             this.SaveAsToolStripMenuItem,
             this.toolStripSeparator3,
             this.CloseToolStripMenuItem,
-            this.CloseAllToolStripMenuItem});
+            this.CloseAllToolStripMenuItem,
+            this.toolStripSeparator4,
+            this.ExitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -153,6 +155,19 @@
             this.CloseAllToolStripMenuItem.ToolTipText = "Close All";
             this.CloseAllToolStripMenuItem.Click += new System.EventHandler(this.CloseAllToolStripMenuItem_Click);
             // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(194, 6);
+            // 
+            // ExitToolStripMenuItem
+            // 
+            this.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem";
+            this.ExitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
+            this.ExitToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.ExitToolStripMenuItem.Text = "Exit";
+            this.ExitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
+            // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -193,7 +208,6 @@
             this.DarkModeToolStripMenuItem.Name = "DarkModeToolStripMenuItem";
             this.DarkModeToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.DarkModeToolStripMenuItem.Text = "Dark Mode";
-            this.DarkModeToolStripMenuItem.Click += new System.EventHandler(this.DarkModeToolStripMenuItem_Click_1);
             // 
             // BottomToolStrip
             // 
@@ -312,17 +326,6 @@
             this.CloseToolStripButton.ToolTipText = "Close";
             this.CloseToolStripButton.Click += new System.EventHandler(this.CloseToolStripButton_Click);
             // 
-            // SaveFileDialog
-            // 
-            this.SaveFileDialog.DefaultExt = "txt";
-            this.SaveFileDialog.Filter = "All types (*.*)|*.*|Text Files (*.txt)|*.txt";
-            this.SaveFileDialog.Title = "Save As";
-            // 
-            // OpenFileDialog
-            // 
-            this.OpenFileDialog.Filter = "All types (*.*)|*.*|Text Files (*.txt)|*.txt";
-            this.OpenFileDialog.Title = "Open";
-            // 
             // Runtime
             // 
             this.Runtime.Enabled = true;
@@ -388,8 +391,6 @@
         private System.Windows.Forms.ToolStripButton OpenToolStripButton;
         private System.Windows.Forms.ToolStripButton SaveToolStripButton;
         private System.Windows.Forms.ToolStripButton SaveAsToolStripButton;
-        private System.Windows.Forms.SaveFileDialog SaveFileDialog;
-        private System.Windows.Forms.OpenFileDialog OpenFileDialog;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripLabel SavedLabel;
         private System.Windows.Forms.Timer Runtime;
@@ -400,6 +401,8 @@
         private System.Windows.Forms.ToolStripMenuItem CloseAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem DarkModeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem ExitToolStripMenuItem;
     }
 }
 

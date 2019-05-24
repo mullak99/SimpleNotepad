@@ -51,6 +51,7 @@
     <Compile Include="CustomControls\AdvancedTextBox.Designer.cs">
       <DependentUpon>AdvancedTextBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Notepad.cs" />
     <Compile Include="SimpleNotepad.cs">
       <SubType>Form</SubType>
     </Compile>

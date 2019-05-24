@@ -9,8 +9,7 @@ namespace SimpleNotepad.CustomControls
 {
     public partial class AdvancedTextBox : UserControl
     {
-        public bool isTextSaved = true;
-        string snapshot_MD5 = "";
+        private string _snapshotMD5 = "";
 
         public AdvancedTextBox()
         {
@@ -19,41 +18,10 @@ namespace SimpleNotepad.CustomControls
             LineNumbers.Font = MainTextBox.Font;
             MainTextBox.Select();
             UpdateLineNumbers();
-            CreateSnapshotOfText();
+            CreateSnapshot();
         }
 
-        public void CreateSnapshotOfText()
-        {
-            using (MD5 md5Hash = MD5.Create())
-            {
-                byte[] bytes = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(MainTextBox.Text));
-
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                snapshot_MD5 = builder.ToString();
-            }
-        }
-
-        public bool DoesCurrentTextEqualSnapshot()
-        {
-            string current_MD5 = "";
-            using (MD5 md5Hash = MD5.Create())
-            {
-                byte[] bytes = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(MainTextBox.Text));
-
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                current_MD5 = builder.ToString();
-            }
-
-            return (current_MD5 == snapshot_MD5);
-        }
+        #region Designer Vars
 
         [Description("The lines of text"), Category("Appearance"), Browsable(true), Bindable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible), EditorBrowsable(EditorBrowsableState.Always)]
@@ -83,6 +51,43 @@ namespace SimpleNotepad.CustomControls
             }
         }
 
+        #endregion
+        #region Public Methods
+        public void CreateSnapshot()
+        {
+            using (MD5 md5Hash = MD5.Create())
+            {
+                byte[] bytes = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(MainTextBox.Text));
+
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                _snapshotMD5 = builder.ToString();
+            }
+        }
+
+        public bool DoesCurrentTextEqualSnapshot()
+        {
+            string current_MD5 = "";
+            using (MD5 md5Hash = MD5.Create())
+            {
+                byte[] bytes = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(MainTextBox.Text));
+
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                current_MD5 = builder.ToString();
+            }
+
+            return (current_MD5 == _snapshotMD5);
+        }
+
+        public bool Saved { get; set; } = true;
+
         public void Select(int start, int length)
         {
             MainTextBox.Select(start, length);
@@ -106,7 +111,10 @@ namespace SimpleNotepad.CustomControls
             }
         }
 
-        public int GetWidth()
+        #endregion
+        #region Private Methods
+
+        private int GetWidth()
         {
             int w = 25;
             int line = MainTextBox.Lines.Length;
@@ -121,7 +129,7 @@ namespace SimpleNotepad.CustomControls
             return w;
         }
 
-        public void UpdateLineNumbers()
+        private void UpdateLineNumbers()
         {
             Point pt = new Point(0, 0);
 
@@ -148,6 +156,9 @@ namespace SimpleNotepad.CustomControls
             else LineNumbers.Text += 1 + "\n";
         }
 
+        #endregion
+        #region Events
+
         private void AdvancedTextBox_Resize(object sender, EventArgs e)
         {
             UpdateLineNumbers();
@@ -171,7 +182,7 @@ namespace SimpleNotepad.CustomControls
         {
             if (MainTextBox.Text == "") UpdateLineNumbers();
 
-            isTextSaved = DoesCurrentTextEqualSnapshot();
+            Saved = DoesCurrentTextEqualSnapshot();
         }
 
         private void MainTextBox_FontChanged(object sender, EventArgs e)
@@ -198,5 +209,8 @@ namespace SimpleNotepad.CustomControls
                 this.ResumeLayout();
             }
         }
+
+        #endregion
+
     }
 }
