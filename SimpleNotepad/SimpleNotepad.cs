@@ -57,7 +57,7 @@ namespace SimpleNotepad
             {
                 if (notepadPages[index].Saved)
                 {
-                    if (notepadPages.Count > 1 || !String.IsNullOrEmpty(notepadPages[index].Text))
+                    if (TabbedNotepad.TabCount > 1 || !String.IsNullOrEmpty(notepadPages[index].Text))
                     {
                         notepadPages.RemoveAt(index);
                         TabbedNotepad.TabPages.RemoveAt(index);
@@ -139,7 +139,7 @@ namespace SimpleNotepad
         {
             try
             {
-                if (notepadPages.Count == 0) New();
+                if (TabbedNotepad.TabCount == 0) New();
 
                 TextLengthLabel.Text = "Length: " + notepadPages[TabbedNotepad.SelectedIndex].Text.Length;
                 LineTotalLabel.Text = "Lines: " + notepadPages[TabbedNotepad.SelectedIndex].Lines.Length;
