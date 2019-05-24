@@ -57,7 +57,7 @@ namespace SimpleNotepad
             {
                 if (notepadPages[index].Saved)
                 {
-                    if (!String.IsNullOrEmpty(notepadPages[index].Text))
+                    if (notepadPages.Count > 1 || !String.IsNullOrEmpty(notepadPages[index].Text))
                     {
                         notepadPages.RemoveAt(index);
                         TabbedNotepad.TabPages.RemoveAt(index);
@@ -159,6 +159,7 @@ namespace SimpleNotepad
                     }
 
                     TabToolTip = notepadPages[TabbedNotepad.SelectedIndex].GetFileName();
+                    this.Text = String.Format("{0} - SimpleNotepad", notepadPages[TabbedNotepad.SelectedIndex].GetFileName());
                 }
                 else
                 {
@@ -173,6 +174,7 @@ namespace SimpleNotepad
                         TabTitle = ("(*) " + notepadPages[TabbedNotepad.SelectedIndex].GetFileName());
                     }
                     TabToolTip = "(Unsaved) " + notepadPages[TabbedNotepad.SelectedIndex].GetFileName();
+                    this.Text = String.Format("(*) {0} - SimpleNotepad", notepadPages[TabbedNotepad.SelectedIndex].GetFileName());
                 }
 
                 if (TabTitle != null && TabToolTip != null && notepadPages[TabbedNotepad.SelectedIndex].TabTitle != TabTitle || notepadPages[TabbedNotepad.SelectedIndex].TabToolTip != TabToolTip)
