@@ -339,6 +339,7 @@
             this.TabbedNotepad.Size = new System.Drawing.Size(800, 376);
             this.TabbedNotepad.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.TabbedNotepad.TabIndex = 6;
+            this.TabbedNotepad.TabStop = false;
             this.TabbedNotepad.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.TabbedNotepad_DrawItem);
             this.TabbedNotepad.TabIndexChanged += new System.EventHandler(this.TabbedNotepad_TabIndexChanged);
             this.TabbedNotepad.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TabbedNotepad_MouseDown);
