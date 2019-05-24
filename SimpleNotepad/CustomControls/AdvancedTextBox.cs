@@ -21,7 +21,7 @@ namespace SimpleNotepad.CustomControls
             UpdateLineNumbers();
         }
 
-        public bool isTextSaved = false;
+        public bool isTextSaved = true;
 
         [Description("The lines of text"), Category("Appearance"), Browsable(true), Bindable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible), EditorBrowsable(EditorBrowsableState.Always)]
