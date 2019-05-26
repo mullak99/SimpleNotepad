@@ -36,7 +36,11 @@ namespace SimpleNotepad
             else
                 _tabPage.Text = _fileName;
 
-            _tabPage.ToolTipText = _fileName;
+            if (_filePath != null)
+                _tabPage.ToolTipText = _filePath;
+            else
+                _tabPage.ToolTipText = _fileName;
+
             _tabPage.Controls.Add(_advandedTextBox);
 
             _tabControl.Controls.Add(_tabPage);
