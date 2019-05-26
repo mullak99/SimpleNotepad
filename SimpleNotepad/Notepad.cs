@@ -1,5 +1,6 @@
 ﻿using SimpleNotepad.CustomControls;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -16,7 +17,7 @@ namespace SimpleNotepad
 
         private const int MaxTabTitleLength = 11;
 
-        public NotepadPage(ref TabControl tabControl, string fileName, bool switchToNewTab = true, string filePath = null)
+        public NotepadPage(ref TabControl tabControl, string fileName, Font font = null, bool switchToNewTab = true, string filePath = null)
         {
             _tabControl = tabControl;
             _fileName = fileName;
@@ -26,6 +27,8 @@ namespace SimpleNotepad
             _advandedTextBox = new AdvancedTextBox();
             _advandedTextBox.Dock = DockStyle.Fill;
 
+            if (font != null) _advandedTextBox.Font = font;
+
             _tabPage = new TabPage();
 
             if (_fileName.Length > (MaxTabTitleLength + 3))
@@ -34,31 +37,48 @@ namespace SimpleNotepad
                 _tabPage.Text = _fileName;
 
             _tabPage.ToolTipText = _fileName;
-
             _tabPage.Controls.Add(_advandedTextBox);
 
             _tabControl.Controls.Add(_tabPage);
             _tabControl.SelectedTab = _tabPage;
-
             _tabControl.Refresh();
 
             Focus();
         }
 
-        public string GetFileName()
+        public void SetTabColours(Color tabForeColour, Color tabBackColour)
         {
-            return _fileName;
+            _tabPage.ForeColor = tabForeColour;
+            _tabPage.BackColor = tabBackColour;
         }
 
-        public string GetFilePath()
+        public void ResetTabColours()
         {
-            return _filePath;
+            _tabPage.ForeColor = SystemColors.WindowText;
+            _tabPage.BackColor = SystemColors.Window;
+        }
+
+        public void SetNotepadColours(Color textBoxForeColour, Color textBoxBackColour, Color lineNumForeColour, Color lineNumBackColour)
+        {
+            _advandedTextBox.ForeColor = textBoxForeColour;
+            _advandedTextBox.BackColor = textBoxBackColour;
+
+            _advandedTextBox.LineNumberForeColor = lineNumForeColour;
+            _advandedTextBox.LineNumberBackColor = lineNumBackColour;
+        }
+
+        public void ResetNotepadColours()
+        {
+            _advandedTextBox.ForeColor = SystemColors.WindowText;
+            _advandedTextBox.BackColor = SystemColors.Window;
+
+            _advandedTextBox.LineNumberForeColor = SystemColors.ControlDarkDark;
+            _advandedTextBox.LineNumberBackColor = SystemColors.Control;
         }
 
         public bool Focus()
         {
-            if (_switchToNewTab)
-                return _advandedTextBox.Focus();
+            if (_switchToNewTab) return _advandedTextBox.Focus();
 
             return false;
         }
@@ -71,6 +91,16 @@ namespace SimpleNotepad
         public void Redo()
         {
             _advandedTextBox.Redo();
+        }
+
+        public string FileName
+        {
+            get { return _fileName; }
+        }
+
+        public string FilePath
+        {
+            get { return _filePath; }
         }
 
         public string TabTitle
@@ -98,6 +128,12 @@ namespace SimpleNotepad
             {
                 _tabPage.ToolTipText = value;
             }
+        }
+
+        public Font Font
+        {
+            get { return _advandedTextBox.GlobalFont; }
+            set { _advandedTextBox.GlobalFont = value; }
         }
 
         public string Text

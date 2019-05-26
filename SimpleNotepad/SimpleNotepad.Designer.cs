@@ -44,6 +44,8 @@
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.formatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DarkModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BottomToolStrip = new System.Windows.Forms.ToolStrip();
@@ -51,7 +53,6 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.LineTotalLabel = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.SavedLabel = new System.Windows.Forms.ToolStripLabel();
             this.TopToolStrip = new System.Windows.Forms.ToolStrip();
             this.NewToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.OpenToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -71,6 +72,7 @@
             this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
+            this.formatToolStripMenuItem,
             this.settingsToolStripMenuItem});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
@@ -194,6 +196,21 @@
             this.redoToolStripMenuItem.Text = "Redo";
             this.redoToolStripMenuItem.Click += new System.EventHandler(this.RedoToolStripMenuItem_Click);
             // 
+            // formatToolStripMenuItem
+            // 
+            this.formatToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FontToolStripMenuItem});
+            this.formatToolStripMenuItem.Name = "formatToolStripMenuItem";
+            this.formatToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
+            this.formatToolStripMenuItem.Text = "Format";
+            // 
+            // FontToolStripMenuItem
+            // 
+            this.FontToolStripMenuItem.Name = "FontToolStripMenuItem";
+            this.FontToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.FontToolStripMenuItem.Text = "Font";
+            this.FontToolStripMenuItem.Click += new System.EventHandler(this.FontToolStripMenuItem_Click);
+            // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -204,10 +221,10 @@
             // 
             // DarkModeToolStripMenuItem
             // 
-            this.DarkModeToolStripMenuItem.Enabled = false;
             this.DarkModeToolStripMenuItem.Name = "DarkModeToolStripMenuItem";
-            this.DarkModeToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
-            this.DarkModeToolStripMenuItem.Text = "Dark Mode";
+            this.DarkModeToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.DarkModeToolStripMenuItem.Text = "Dark Mode (WIP)";
+            this.DarkModeToolStripMenuItem.Click += new System.EventHandler(this.DarkModeToolStripMenuItem_Click);
             // 
             // BottomToolStrip
             // 
@@ -218,8 +235,7 @@
             this.TextLengthLabel,
             this.toolStripSeparator1,
             this.LineTotalLabel,
-            this.toolStripSeparator2,
-            this.SavedLabel});
+            this.toolStripSeparator2});
             this.BottomToolStrip.Location = new System.Drawing.Point(0, 425);
             this.BottomToolStrip.Name = "BottomToolStrip";
             this.BottomToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -249,12 +265,6 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
-            // SavedLabel
-            // 
-            this.SavedLabel.Name = "SavedLabel";
-            this.SavedLabel.Size = new System.Drawing.Size(66, 22);
-            this.SavedLabel.Text = "Saved: True";
             // 
             // TopToolStrip
             // 
@@ -345,6 +355,7 @@
             this.TabbedNotepad.TabStop = false;
             this.TabbedNotepad.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.TabbedNotepad_DrawItem);
             this.TabbedNotepad.TabIndexChanged += new System.EventHandler(this.TabbedNotepad_TabIndexChanged);
+            this.TabbedNotepad.Click += new System.EventHandler(this.TabbedNotepad_Click);
             this.TabbedNotepad.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TabbedNotepad_MouseDown);
             // 
             // SimpleNotepad
@@ -392,7 +403,6 @@
         private System.Windows.Forms.ToolStripButton SaveToolStripButton;
         private System.Windows.Forms.ToolStripButton SaveAsToolStripButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripLabel SavedLabel;
         private System.Windows.Forms.Timer Runtime;
         private System.Windows.Forms.TabControl TabbedNotepad;
         private System.Windows.Forms.ToolStripButton CloseToolStripButton;
@@ -403,6 +413,8 @@
         private System.Windows.Forms.ToolStripMenuItem DarkModeToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem ExitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem formatToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem FontToolStripMenuItem;
     }
 }
 

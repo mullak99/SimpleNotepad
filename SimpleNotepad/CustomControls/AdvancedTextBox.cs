@@ -27,27 +27,59 @@ namespace SimpleNotepad.CustomControls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible), EditorBrowsable(EditorBrowsableState.Always)]
         public string[] Lines
         {
-            get
-            {
-                return MainTextBox.Lines;
-            }
-            set
-            {
-                MainTextBox.Lines = value;
-            }
+            get { return MainTextBox.Lines; }
+            set { MainTextBox.Lines = value; }
         }
 
         [Description("The text of the textbox"), Category("Appearance"), Browsable(true), Bindable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible), EditorBrowsable(EditorBrowsableState.Always)]
         public override string Text
         {
-            get
-            {
-                return MainTextBox.Text;
-            }
+            get { return MainTextBox.Text; }
+            set { MainTextBox.Text = value; }
+        }
+
+        [Description("The color of the text"), Category("Appearance"), Browsable(true), Bindable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible), EditorBrowsable(EditorBrowsableState.Always)]
+        public override Color ForeColor
+        {
+            get { return MainTextBox.ForeColor; }
+            set { MainTextBox.ForeColor = value; }
+        }
+
+        [Description("The background color"), Category("Appearance"), Browsable(true), Bindable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible), EditorBrowsable(EditorBrowsableState.Always)]
+        public override Color BackColor
+        {
+            get { return MainTextBox.BackColor; }
+            set { MainTextBox.BackColor = value; }
+        }
+
+        [Description("The color of the line number text"), Category("Appearance"), Browsable(true), Bindable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible), EditorBrowsable(EditorBrowsableState.Always)]
+        public Color LineNumberForeColor
+        {
+            get { return LineNumbers.ForeColor; }
+            set { LineNumbers.ForeColor = value; }
+        }
+
+        [Description("The background color of the line number textbox"), Category("Appearance"), Browsable(true), Bindable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible), EditorBrowsable(EditorBrowsableState.Always)]
+        public Color LineNumberBackColor
+        {
+            get { return LineNumbers.BackColor; }
+            set { LineNumbers.BackColor = value; }
+        }
+
+        [Description("The font used to display text in the control"), Category("Appearance"), Browsable(true), Bindable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible), EditorBrowsable(EditorBrowsableState.Always)]
+        public Font GlobalFont
+        {
+            get { return MainTextBox.Font; }
             set
             {
-                MainTextBox.Text = value;
+                MainTextBox.Font = value;
+                LineNumbers.Font = value;
             }
         }
 
@@ -159,6 +191,16 @@ namespace SimpleNotepad.CustomControls
         #endregion
         #region Events
 
+        private void LineNumbers_MouseEnter(object sender, EventArgs e)
+        {
+            ActiveControl = MainTextBox;
+        }
+
+        private void LineNumbers_Enter(object sender, EventArgs e)
+        {
+            ActiveControl = MainTextBox;
+        }
+
         private void AdvancedTextBox_Resize(object sender, EventArgs e)
         {
             UpdateLineNumbers();
@@ -211,6 +253,5 @@ namespace SimpleNotepad.CustomControls
         }
 
         #endregion
-
     }
 }

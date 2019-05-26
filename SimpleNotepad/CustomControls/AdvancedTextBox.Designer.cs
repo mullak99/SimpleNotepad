@@ -81,7 +81,6 @@
             this.LineNumbers.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.LineNumbers.Cursor = System.Windows.Forms.Cursors.Default;
             this.LineNumbers.Dock = System.Windows.Forms.DockStyle.Left;
-            this.LineNumbers.Enabled = false;
             this.LineNumbers.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.LineNumbers.Location = new System.Drawing.Point(0, 0);
             this.LineNumbers.Name = "LineNumbers";
@@ -91,6 +90,8 @@
             this.LineNumbers.TabIndex = 1;
             this.LineNumbers.TabStop = false;
             this.LineNumbers.Text = "";
+            this.LineNumbers.Enter += new System.EventHandler(this.LineNumbers_Enter);
+            this.LineNumbers.MouseEnter += new System.EventHandler(this.LineNumbers_MouseEnter);
             // 
             // AdvancedTextBox
             // 

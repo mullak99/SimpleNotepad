@@ -7,8 +7,9 @@ namespace SimpleNotepad
 {
     public partial class SimpleNotepad : Form
     {
-
         List<NotepadPage> notepadPages = new List<NotepadPage>();
+
+        Font _globalFont = null;
 
         public SimpleNotepad()
         {
@@ -16,6 +17,14 @@ namespace SimpleNotepad
         }
 
         #region Tabs
+
+        private void ForceRemoveTabAt(int index)
+        {
+            notepadPages.RemoveAt(index);
+            TabbedNotepad.TabPages.RemoveAt(index);
+
+            if (TabbedNotepad.TabCount > 0) TabbedNotepad.SelectedIndex = (TabbedNotepad.TabCount - 1);
+        }
 
         private bool CloseTabAt(int index)
         {
@@ -26,25 +35,22 @@ namespace SimpleNotepad
                 {
                     if (TabbedNotepad.TabCount > 1 || !String.IsNullOrEmpty(notepadPages[index].Text))
                     {
-                        notepadPages.RemoveAt(index);
-                        TabbedNotepad.TabPages.RemoveAt(index);
+                        ForceRemoveTabAt(index);
                         ret = true;
                     }
                 }
                 else
                 {
-                    DialogResult diagResult = MessageBox.Show(String.Format("Are you want to close '{0}' without saving?", notepadPages[index].GetFileName()), "Close without saving?", MessageBoxButtons.YesNoCancel);
+                    DialogResult diagResult = MessageBox.Show(String.Format("Do you want to close '{0}' without saving?", notepadPages[index].FileName), "Close without saving?", MessageBoxButtons.YesNoCancel);
 
                     if (diagResult == DialogResult.Yes)
                     {
-                        notepadPages.RemoveAt(index);
-                        TabbedNotepad.TabPages.RemoveAt(index);
+                        ForceRemoveTabAt(index);
                         ret = true;
                     }
                     else if (diagResult == DialogResult.No && notepadPages[index].Save())
                     {
-                        notepadPages.RemoveAt(index);
-                        TabbedNotepad.TabPages.RemoveAt(index);
+                        ForceRemoveTabAt(index);
                         ret = true;
                     }
 
@@ -99,12 +105,20 @@ namespace SimpleNotepad
             Runtime_Tick(sender, e);
         }
 
+        private void TabbedNotepad_Click(object sender, EventArgs e)
+        {
+            foreach (NotepadPage npPage in notepadPages)
+            {
+                npPage.Focus();
+            }
+        }
+
         #endregion
         #region MenuToolStrip
 
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NotepadPage notePadPage = new NotepadPage(ref TabbedNotepad, String.Format("New {0}", notepadPages.Count + 1));
+            NotepadPage notePadPage = new NotepadPage(ref TabbedNotepad, String.Format("New {0}", notepadPages.Count + 1), _globalFont);
             notepadPages.Add(notePadPage);
             notePadPage.Focus();
         }
@@ -114,7 +128,7 @@ namespace SimpleNotepad
             NotepadPage notepadPage;
 
             if (notepadPages.Count > 0 && !String.IsNullOrWhiteSpace(notepadPages[notepadPages.Count - 1].Text))
-                notepadPage = new NotepadPage(ref TabbedNotepad, String.Format("New {0}", notepadPages.Count + 1));
+                notepadPage = new NotepadPage(ref TabbedNotepad, String.Format("New {0}", notepadPages.Count + 1), _globalFont);
             else
                 notepadPage = notepadPages[notepadPages.Count - 1];
 
@@ -158,6 +172,63 @@ namespace SimpleNotepad
         private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             notepadPages[TabbedNotepad.SelectedIndex].Redo();
+        }
+
+        private void FontToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FontDialog fontDiag = new FontDialog();
+            fontDiag.ShowColor = false;
+            DialogResult result = fontDiag.ShowDialog();
+
+            if (result != DialogResult.Cancel)
+            {
+                _globalFont = fontDiag.Font;
+
+                foreach (NotepadPage npPage in notepadPages)
+                {
+                    npPage.Font = _globalFont;
+                }
+            }
+        }
+
+        private void DarkModeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DarkModeToolStripMenuItem.Checked = !DarkModeToolStripMenuItem.Checked;
+
+            if (DarkModeToolStripMenuItem.Checked)
+            {
+                foreach (NotepadPage npPage in notepadPages)
+                {
+                    npPage.SetTabColours(Color.White, Color.FromArgb(30, 30, 30));
+                    npPage.SetNotepadColours(Color.White, Color.FromArgb(30, 30, 30), Color.LightGray, Color.FromArgb(60, 60, 60));
+                }
+                /*
+                MenuStrip.BackColor = Color.FromArgb(45, 45, 45);
+                MenuStrip.ForeColor = Color.White;
+
+                TopToolStrip.BackColor = Color.FromArgb(45, 45, 45);
+                TopToolStrip.ForeColor = Color.White;
+
+                BottomToolStrip.BackColor = Color.FromArgb(45, 45, 45);
+                BottomToolStrip.ForeColor = Color.White;*/
+            }
+            else
+            {
+                foreach (NotepadPage npPage in notepadPages)
+                {
+                    npPage.ResetTabColours();
+                    npPage.ResetNotepadColours();
+                }
+                /*
+                MenuStrip.BackColor = Color.FromArgb(240, 240, 240);
+                MenuStrip.ForeColor = SystemColors.WindowText;
+
+                TopToolStrip.BackColor = Color.FromArgb(240, 240, 240);
+                TopToolStrip.ForeColor = SystemColors.WindowText;
+
+                BottomToolStrip.BackColor = Color.FromArgb(240, 240, 240);
+                BottomToolStrip.ForeColor = SystemColors.WindowText;*/
+            }
         }
 
         #endregion
@@ -208,34 +279,30 @@ namespace SimpleNotepad
                 string TabTitle, TabToolTip;
                 if (notepadPages[TabbedNotepad.SelectedIndex].Saved)
                 {
-                    SavedLabel.Text = "Saved: True";
-
                     try
                     {
-                        TabTitle = notepadPages[TabbedNotepad.SelectedIndex].GetFileName().Substring(0, 11).TrimEnd(' ') + "...";
+                        TabTitle = notepadPages[TabbedNotepad.SelectedIndex].FileName.Substring(0, 11).TrimEnd(' ') + "...";
                     }
                     catch
                     {
-                        TabTitle = notepadPages[TabbedNotepad.SelectedIndex].GetFileName();
+                        TabTitle = notepadPages[TabbedNotepad.SelectedIndex].FileName;
                     }
 
-                    TabToolTip = notepadPages[TabbedNotepad.SelectedIndex].GetFileName();
-                    this.Text = String.Format("{0} - SimpleNotepad", notepadPages[TabbedNotepad.SelectedIndex].GetFileName());
+                    TabToolTip = notepadPages[TabbedNotepad.SelectedIndex].FileName;
+                    this.Text = String.Format("{0} - SimpleNotepad", notepadPages[TabbedNotepad.SelectedIndex].FileName);
                 }
                 else
                 {
-                    SavedLabel.Text = "Saved: False";
-
                     try
                     {
-                        TabTitle = ("(*) " + notepadPages[TabbedNotepad.SelectedIndex].GetFileName()).Substring(0, 11).TrimEnd(' ') + "...";
+                        TabTitle = ("(*) " + notepadPages[TabbedNotepad.SelectedIndex].FileName).Substring(0, 11).TrimEnd(' ') + "...";
                     }
                     catch
                     {
-                        TabTitle = ("(*) " + notepadPages[TabbedNotepad.SelectedIndex].GetFileName());
+                        TabTitle = ("(*) " + notepadPages[TabbedNotepad.SelectedIndex].FileName);
                     }
-                    TabToolTip = "(Unsaved) " + notepadPages[TabbedNotepad.SelectedIndex].GetFileName();
-                    this.Text = String.Format("(*) {0} - SimpleNotepad", notepadPages[TabbedNotepad.SelectedIndex].GetFileName());
+                    TabToolTip = "(Unsaved) " + notepadPages[TabbedNotepad.SelectedIndex].FileName;
+                    this.Text = String.Format("(*) {0} - SimpleNotepad", notepadPages[TabbedNotepad.SelectedIndex].FileName);
                 }
 
                 if (TabTitle != null && TabToolTip != null && notepadPages[TabbedNotepad.SelectedIndex].TabTitle != TabTitle || notepadPages[TabbedNotepad.SelectedIndex].TabToolTip != TabToolTip)
@@ -259,6 +326,7 @@ namespace SimpleNotepad
             if (!CloseAllTabs())
                 e.Cancel = true;
         }
+
 
         #endregion
     }
