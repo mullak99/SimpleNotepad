@@ -8,6 +8,7 @@ namespace SimpleNotepad
     public partial class SimpleNotepad : Form
     {
         List<NotepadPage> notepadPages = new List<NotepadPage>();
+        List<string> tabFileNames = new List<string>();
 
         Font _globalFont;
 
@@ -17,12 +18,39 @@ namespace SimpleNotepad
             _globalFont = this.Font;
         }
 
+        #region Methods
+
+        private string GetNewFileName(Int64 newFileNameIntStart = -1)
+        {
+            Int64 newFileNameInt;
+            if (newFileNameIntStart == -1)
+                newFileNameInt = 1;
+            else newFileNameInt = newFileNameIntStart + 1;
+
+            string tabFileName = String.Format("New {0}", newFileNameInt);
+
+            if (tabFileNames.Exists(s => s == tabFileName))
+            {
+                tabFileName = String.Format("New {0}", newFileNameInt + 1);
+                return GetNewFileName(newFileNameInt);
+            }
+            else
+            {
+                tabFileNames.Add(tabFileName);
+                return tabFileName;
+            }
+        }
+
+        #endregion
         #region Tabs
 
         private void ForceRemoveTabAt(int index)
         {
+            string fileName = notepadPages[index].FileName;
+
             notepadPages.RemoveAt(index);
             TabbedNotepad.TabPages.RemoveAt(index);
+            tabFileNames.Remove(fileName);
 
             if (TabbedNotepad.TabCount > 0) TabbedNotepad.SelectedIndex = (TabbedNotepad.TabCount - 1);
         }
@@ -119,7 +147,7 @@ namespace SimpleNotepad
 
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NotepadPage notePadPage = new NotepadPage(ref TabbedNotepad, String.Format("New {0}", notepadPages.Count + 1), _globalFont);
+            NotepadPage notePadPage = new NotepadPage(ref TabbedNotepad, GetNewFileName(), _globalFont);
             notepadPages.Add(notePadPage);
             notePadPage.Focus();
         }
@@ -129,7 +157,7 @@ namespace SimpleNotepad
             NotepadPage notepadPage;
 
             if (notepadPages.Count > 0 && !String.IsNullOrWhiteSpace(notepadPages[notepadPages.Count - 1].Text))
-                notepadPage = new NotepadPage(ref TabbedNotepad, String.Format("New {0}", notepadPages.Count + 1), _globalFont);
+                notepadPage = new NotepadPage(ref TabbedNotepad, GetNewFileName(), _globalFont);
             else
                 notepadPage = notepadPages[notepadPages.Count - 1];
 
@@ -258,7 +286,23 @@ namespace SimpleNotepad
 
         private void CloseToolStripButton_Click(object sender, EventArgs e)
         {
-            CloseToolStripMenuItem_Click(sender, e);
+            if (ModifierKeys == Keys.Shift)
+                CloseAllToolStripMenuItem_Click(sender, e);
+            else
+                CloseToolStripMenuItem_Click(sender, e);
+        }
+
+        private void CloseToolStripButton_MouseHover(object sender, EventArgs e)
+        {
+            if (ModifierKeys == Keys.Shift)
+                CloseToolStripButton.ToolTipText = "Close All";
+            else
+                CloseToolStripButton.ToolTipText = "Close";
+        }
+
+        private void FontToolStripButton_Click(object sender, EventArgs e)
+        {
+            FontToolStripMenuItem_Click(sender, e);
         }
 
         #endregion

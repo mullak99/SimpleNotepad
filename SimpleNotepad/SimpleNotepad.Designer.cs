@@ -61,6 +61,8 @@
             this.CloseToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.Runtime = new System.Windows.Forms.Timer(this.components);
             this.TabbedNotepad = new System.Windows.Forms.TabControl();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.FontToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.MenuStrip.SuspendLayout();
             this.BottomToolStrip.SuspendLayout();
             this.TopToolStrip.SuspendLayout();
@@ -110,7 +112,7 @@
             this.OpenToolStripMenuItem.Name = "OpenToolStripMenuItem";
             this.OpenToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.OpenToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
-            this.OpenToolStripMenuItem.Text = "Open";
+            this.OpenToolStripMenuItem.Text = "Open...";
             this.OpenToolStripMenuItem.ToolTipText = "Open";
             this.OpenToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
             // 
@@ -129,7 +131,7 @@
             this.SaveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
             | System.Windows.Forms.Keys.S)));
             this.SaveAsToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
-            this.SaveAsToolStripMenuItem.Text = "Save As";
+            this.SaveAsToolStripMenuItem.Text = "Save As...";
             this.SaveAsToolStripMenuItem.ToolTipText = "Save As";
             this.SaveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
@@ -207,8 +209,8 @@
             // FontToolStripMenuItem
             // 
             this.FontToolStripMenuItem.Name = "FontToolStripMenuItem";
-            this.FontToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
-            this.FontToolStripMenuItem.Text = "Font";
+            this.FontToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.FontToolStripMenuItem.Text = "Font...";
             this.FontToolStripMenuItem.Click += new System.EventHandler(this.FontToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
@@ -276,7 +278,9 @@
             this.OpenToolStripButton,
             this.SaveToolStripButton,
             this.SaveAsToolStripButton,
-            this.CloseToolStripButton});
+            this.CloseToolStripButton,
+            this.toolStripSeparator5,
+            this.FontToolStripButton});
             this.TopToolStrip.Location = new System.Drawing.Point(0, 24);
             this.TopToolStrip.Name = "TopToolStrip";
             this.TopToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -300,8 +304,8 @@
             this.OpenToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("OpenToolStripButton.Image")));
             this.OpenToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OpenToolStripButton.Name = "OpenToolStripButton";
-            this.OpenToolStripButton.Size = new System.Drawing.Size(40, 22);
-            this.OpenToolStripButton.Text = "Open";
+            this.OpenToolStripButton.Size = new System.Drawing.Size(49, 22);
+            this.OpenToolStripButton.Text = "Open...";
             this.OpenToolStripButton.Click += new System.EventHandler(this.OpenToolStripButton_Click);
             // 
             // SaveToolStripButton
@@ -320,8 +324,8 @@
             this.SaveAsToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("SaveAsToolStripButton.Image")));
             this.SaveAsToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveAsToolStripButton.Name = "SaveAsToolStripButton";
-            this.SaveAsToolStripButton.Size = new System.Drawing.Size(51, 22);
-            this.SaveAsToolStripButton.Text = "Save As";
+            this.SaveAsToolStripButton.Size = new System.Drawing.Size(60, 22);
+            this.SaveAsToolStripButton.Text = "Save As...";
             this.SaveAsToolStripButton.Click += new System.EventHandler(this.SaveAsToolStripButton_Click);
             // 
             // CloseToolStripButton
@@ -335,6 +339,7 @@
             this.CloseToolStripButton.Text = "X";
             this.CloseToolStripButton.ToolTipText = "Close";
             this.CloseToolStripButton.Click += new System.EventHandler(this.CloseToolStripButton_Click);
+            this.CloseToolStripButton.MouseHover += new System.EventHandler(this.CloseToolStripButton_MouseHover);
             // 
             // Runtime
             // 
@@ -357,6 +362,21 @@
             this.TabbedNotepad.TabIndexChanged += new System.EventHandler(this.TabbedNotepad_TabIndexChanged);
             this.TabbedNotepad.Click += new System.EventHandler(this.TabbedNotepad_Click);
             this.TabbedNotepad.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TabbedNotepad_MouseDown);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // FontToolStripButton
+            // 
+            this.FontToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FontToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("FontToolStripButton.Image")));
+            this.FontToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FontToolStripButton.Name = "FontToolStripButton";
+            this.FontToolStripButton.Size = new System.Drawing.Size(44, 22);
+            this.FontToolStripButton.Text = "Font...";
+            this.FontToolStripButton.Click += new System.EventHandler(this.FontToolStripButton_Click);
             // 
             // SimpleNotepad
             // 
@@ -415,6 +435,8 @@
         private System.Windows.Forms.ToolStripMenuItem ExitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem formatToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FontToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripButton FontToolStripButton;
     }
 }
 
