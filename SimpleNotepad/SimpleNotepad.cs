@@ -9,11 +9,12 @@ namespace SimpleNotepad
     {
         List<NotepadPage> notepadPages = new List<NotepadPage>();
 
-        Font _globalFont = null;
+        Font _globalFont;
 
         public SimpleNotepad()
         {
             InitializeComponent();
+            _globalFont = this.Font;
         }
 
         #region Tabs
@@ -178,6 +179,7 @@ namespace SimpleNotepad
         {
             FontDialog fontDiag = new FontDialog();
             fontDiag.ShowColor = false;
+            fontDiag.Font = _globalFont;
             DialogResult result = fontDiag.ShowDialog();
 
             if (result != DialogResult.Cancel)
