@@ -46,8 +46,14 @@
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.formatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.EncodingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ANSIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.UTF8ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.themeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DefaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DarkModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PureBlackModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BottomToolStrip = new System.Windows.Forms.ToolStrip();
             this.TextLengthLabel = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -59,10 +65,12 @@
             this.SaveToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.SaveAsToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.CloseToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.Runtime = new System.Windows.Forms.Timer(this.components);
-            this.TabbedNotepad = new System.Windows.Forms.TabControl();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.FontToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.Runtime = new System.Windows.Forms.Timer(this.components);
+            this.TabbedNotepad = new System.Windows.Forms.TabControl();
+            this.EncodingLabel = new System.Windows.Forms.ToolStripLabel();
+            this.ASCIIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.BottomToolStrip.SuspendLayout();
             this.TopToolStrip.SuspendLayout();
@@ -201,7 +209,8 @@
             // formatToolStripMenuItem
             // 
             this.formatToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FontToolStripMenuItem});
+            this.FontToolStripMenuItem,
+            this.EncodingToolStripMenuItem});
             this.formatToolStripMenuItem.Name = "formatToolStripMenuItem";
             this.formatToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.formatToolStripMenuItem.Text = "Format";
@@ -213,20 +222,72 @@
             this.FontToolStripMenuItem.Text = "Font...";
             this.FontToolStripMenuItem.Click += new System.EventHandler(this.FontToolStripMenuItem_Click);
             // 
+            // EncodingToolStripMenuItem
+            // 
+            this.EncodingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ANSIToolStripMenuItem,
+            this.ASCIIToolStripMenuItem,
+            this.UTF8ToolStripMenuItem});
+            this.EncodingToolStripMenuItem.Name = "EncodingToolStripMenuItem";
+            this.EncodingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.EncodingToolStripMenuItem.Text = "Encoding";
+            // 
+            // ANSIToolStripMenuItem
+            // 
+            this.ANSIToolStripMenuItem.Name = "ANSIToolStripMenuItem";
+            this.ANSIToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ANSIToolStripMenuItem.Text = "ANSI";
+            this.ANSIToolStripMenuItem.Click += new System.EventHandler(this.SetEncodingToolStripMenuItem_Click);
+            // 
+            // UTF8ToolStripMenuItem
+            // 
+            this.UTF8ToolStripMenuItem.Checked = true;
+            this.UTF8ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.UTF8ToolStripMenuItem.Name = "UTF8ToolStripMenuItem";
+            this.UTF8ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.UTF8ToolStripMenuItem.Text = "UTF-8";
+            this.UTF8ToolStripMenuItem.Click += new System.EventHandler(this.SetEncodingToolStripMenuItem_Click);
+            // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.DarkModeToolStripMenuItem});
+            this.themeToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
+            // themeToolStripMenuItem
+            // 
+            this.themeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.DefaultToolStripMenuItem,
+            this.DarkModeToolStripMenuItem,
+            this.PureBlackModeToolStripMenuItem});
+            this.themeToolStripMenuItem.Name = "themeToolStripMenuItem";
+            this.themeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.themeToolStripMenuItem.Text = "Theme";
+            // 
+            // DefaultToolStripMenuItem
+            // 
+            this.DefaultToolStripMenuItem.Checked = true;
+            this.DefaultToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.DefaultToolStripMenuItem.Name = "DefaultToolStripMenuItem";
+            this.DefaultToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.DefaultToolStripMenuItem.Text = "Default";
+            this.DefaultToolStripMenuItem.Click += new System.EventHandler(this.SetDefaultThemeToolStripMenuItem_Click);
+            // 
             // DarkModeToolStripMenuItem
             // 
             this.DarkModeToolStripMenuItem.Name = "DarkModeToolStripMenuItem";
-            this.DarkModeToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.DarkModeToolStripMenuItem.Text = "Dark Mode (WIP)";
-            this.DarkModeToolStripMenuItem.Click += new System.EventHandler(this.DarkModeToolStripMenuItem_Click);
+            this.DarkModeToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.DarkModeToolStripMenuItem.Text = "Dark Mode";
+            this.DarkModeToolStripMenuItem.Click += new System.EventHandler(this.SetDefaultThemeToolStripMenuItem_Click);
+            // 
+            // PureBlackModeToolStripMenuItem
+            // 
+            this.PureBlackModeToolStripMenuItem.Name = "PureBlackModeToolStripMenuItem";
+            this.PureBlackModeToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.PureBlackModeToolStripMenuItem.Text = "Pure-Black Mode";
+            this.PureBlackModeToolStripMenuItem.Click += new System.EventHandler(this.SetDefaultThemeToolStripMenuItem_Click);
             // 
             // BottomToolStrip
             // 
@@ -237,7 +298,8 @@
             this.TextLengthLabel,
             this.toolStripSeparator1,
             this.LineTotalLabel,
-            this.toolStripSeparator2});
+            this.toolStripSeparator2,
+            this.EncodingLabel});
             this.BottomToolStrip.Location = new System.Drawing.Point(0, 425);
             this.BottomToolStrip.Name = "BottomToolStrip";
             this.BottomToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -341,6 +403,21 @@
             this.CloseToolStripButton.Click += new System.EventHandler(this.CloseToolStripButton_Click);
             this.CloseToolStripButton.MouseHover += new System.EventHandler(this.CloseToolStripButton_MouseHover);
             // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // FontToolStripButton
+            // 
+            this.FontToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FontToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("FontToolStripButton.Image")));
+            this.FontToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FontToolStripButton.Name = "FontToolStripButton";
+            this.FontToolStripButton.Size = new System.Drawing.Size(44, 22);
+            this.FontToolStripButton.Text = "Font...";
+            this.FontToolStripButton.Click += new System.EventHandler(this.FontToolStripButton_Click);
+            // 
             // Runtime
             // 
             this.Runtime.Enabled = true;
@@ -364,20 +441,19 @@
             this.TabbedNotepad.Click += new System.EventHandler(this.TabbedNotepad_Click);
             this.TabbedNotepad.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TabbedNotepad_MouseDown);
             // 
-            // toolStripSeparator5
+            // EncodingLabel
             // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            this.EncodingLabel.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.EncodingLabel.Name = "EncodingLabel";
+            this.EncodingLabel.Size = new System.Drawing.Size(38, 22);
+            this.EncodingLabel.Text = "UTF-8";
             // 
-            // FontToolStripButton
+            // ASCIIToolStripMenuItem
             // 
-            this.FontToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FontToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("FontToolStripButton.Image")));
-            this.FontToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FontToolStripButton.Name = "FontToolStripButton";
-            this.FontToolStripButton.Size = new System.Drawing.Size(44, 22);
-            this.FontToolStripButton.Text = "Font...";
-            this.FontToolStripButton.Click += new System.EventHandler(this.FontToolStripButton_Click);
+            this.ASCIIToolStripMenuItem.Name = "ASCIIToolStripMenuItem";
+            this.ASCIIToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ASCIIToolStripMenuItem.Text = "ASCII";
+            this.ASCIIToolStripMenuItem.Click += new System.EventHandler(this.SetEncodingToolStripMenuItem_Click);
             // 
             // SimpleNotepad
             // 
@@ -431,13 +507,21 @@
         private System.Windows.Forms.ToolStripMenuItem CloseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CloseAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem DarkModeToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem ExitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem formatToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FontToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton FontToolStripButton;
+        private System.Windows.Forms.ToolStripMenuItem themeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DarkModeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem PureBlackModeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DefaultToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem EncodingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ANSIToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem UTF8ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripLabel EncodingLabel;
+        private System.Windows.Forms.ToolStripMenuItem ASCIIToolStripMenuItem;
     }
 }
 

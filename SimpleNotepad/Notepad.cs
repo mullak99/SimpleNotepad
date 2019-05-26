@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace SimpleNotepad
@@ -11,6 +12,7 @@ namespace SimpleNotepad
         private TabControl _tabControl;
         private TabPage _tabPage;
         private AdvancedTextBox _advandedTextBox;
+        private Encoding _textEncoding = Encoding.UTF8;
 
         private string _fileName, _filePath;
         private bool _switchToNewTab;
@@ -142,45 +144,48 @@ namespace SimpleNotepad
 
         public string Text
         {
-            get
-            {
-                return _advandedTextBox.Text;
-            }
-            set
-            {
-                _advandedTextBox.Text = value;
-            }
+            get { return _advandedTextBox.Text; }
+            set { _advandedTextBox.Text = value; }
         }
 
         public string[] Lines
         {
+            get { return _advandedTextBox.Lines; }
+            set { _advandedTextBox.Lines = value; }
+        }
+
+        public Encoding Encoding
+        {
+            get { return _textEncoding; }
+            set { _textEncoding = value; }
+        }
+
+        public string EncodingString
+        {
             get
             {
-                return _advandedTextBox.Lines;
-            }
-            set
-            {
-                _advandedTextBox.Lines = value;
+                if (Encoding == Encoding.Default) return "ANSI";
+                else if (Encoding == Encoding.ASCII) return "ASCII";
+                else if (Encoding == Encoding.UTF8) return "UTF-8";
+                else if (Encoding == Encoding.Unicode) return "UTF-16 (LE)";
+                else if (Encoding == Encoding.BigEndianUnicode) return "UTF-16 (BE)";
+                else if (Encoding == Encoding.UTF7) return "UTF-7";
+                else if (Encoding == Encoding.UTF32) return "UTF-32";
+                else return Encoding.WebName;
             }
         }
 
         public bool Saved
         {
-            get
-            {
-                return _advandedTextBox.Saved;
-            }
-            set
-            {
-                _advandedTextBox.Saved = value;
-            }
+            get { return _advandedTextBox.Saved; }
+            set { _advandedTextBox.Saved = value; }
         }
 
         public bool Save()
         {
             if (!String.IsNullOrEmpty(_filePath))
             {
-                File.WriteAllLines(_filePath, _advandedTextBox.Lines);
+                File.WriteAllLines(_filePath, _advandedTextBox.Lines, _textEncoding);
 
                 _advandedTextBox.CreateSnapshot();
                 Saved = _advandedTextBox.DoesCurrentTextEqualSnapshot();
@@ -204,7 +209,7 @@ namespace SimpleNotepad
                 _tabPage.Text = _fileName;
                 _tabPage.ToolTipText = _fileName;
 
-                File.WriteAllLines(_filePath, _advandedTextBox.Lines);
+                File.WriteAllLines(_filePath, _advandedTextBox.Lines, _textEncoding);
 
                 _advandedTextBox.CreateSnapshot();
                 Saved = _advandedTextBox.DoesCurrentTextEqualSnapshot();
@@ -229,7 +234,7 @@ namespace SimpleNotepad
 
                 _tabControl.Refresh();
 
-                _advandedTextBox.Lines = File.ReadAllLines(_filePath);
+                _advandedTextBox.Lines = File.ReadAllLines(_filePath, _textEncoding);
                 _advandedTextBox.Select(_advandedTextBox.TextLength, 0);
                 _advandedTextBox.CreateSnapshot();
                 Focus();

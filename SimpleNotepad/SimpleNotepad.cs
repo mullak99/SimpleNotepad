@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
 
 namespace SimpleNotepad
@@ -226,43 +227,76 @@ namespace SimpleNotepad
             }
         }
 
-        private void DarkModeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SetDefaultThemeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DarkModeToolStripMenuItem.Checked = !DarkModeToolStripMenuItem.Checked;
+            Color standardBackground = SystemColors.Window;
+            Color standardForeground = SystemColors.WindowText;
+            Color standardLineBackground = SystemColors.ControlDarkDark;
+            Color standardLineForeground = SystemColors.Control;
 
-            if (DarkModeToolStripMenuItem.Checked)
+            if (sender == DefaultToolStripMenuItem)
             {
-                foreach (NotepadPage npPage in notepadPages)
-                {
-                    npPage.SetTabColours(Color.White, Color.FromArgb(30, 30, 30));
-                    npPage.SetNotepadColours(Color.White, Color.FromArgb(30, 30, 30), Color.LightGray, Color.FromArgb(60, 60, 60));
-                }
-                /*
-                MenuStrip.BackColor = Color.FromArgb(45, 45, 45);
-                MenuStrip.ForeColor = Color.White;
+                DefaultToolStripMenuItem.Checked = true;
+                DarkModeToolStripMenuItem.Checked = false;
+                PureBlackModeToolStripMenuItem.Checked = false;
 
-                TopToolStrip.BackColor = Color.FromArgb(45, 45, 45);
-                TopToolStrip.ForeColor = Color.White;
-
-                BottomToolStrip.BackColor = Color.FromArgb(45, 45, 45);
-                BottomToolStrip.ForeColor = Color.White;*/
+                standardBackground = SystemColors.Window;
+                standardForeground = SystemColors.WindowText;
+                standardLineBackground = SystemColors.ControlDarkDark;
+                standardLineForeground = SystemColors.Control;
             }
-            else
+            else if (sender == DarkModeToolStripMenuItem)
             {
-                foreach (NotepadPage npPage in notepadPages)
-                {
-                    npPage.ResetTabColours();
-                    npPage.ResetNotepadColours();
-                }
-                /*
-                MenuStrip.BackColor = Color.FromArgb(240, 240, 240);
-                MenuStrip.ForeColor = SystemColors.WindowText;
+                DefaultToolStripMenuItem.Checked = false;
+                DarkModeToolStripMenuItem.Checked = true;
+                PureBlackModeToolStripMenuItem.Checked = false;
 
-                TopToolStrip.BackColor = Color.FromArgb(240, 240, 240);
-                TopToolStrip.ForeColor = SystemColors.WindowText;
+                standardBackground = Color.FromArgb(30, 30, 30);
+                standardForeground = Color.White;
+                standardLineBackground = Color.FromArgb(60, 60, 60);
+                standardLineForeground = Color.LightGray;
+            }
+            else if (sender == PureBlackModeToolStripMenuItem)
+            {
+                DefaultToolStripMenuItem.Checked = false;
+                DarkModeToolStripMenuItem.Checked = false;
+                PureBlackModeToolStripMenuItem.Checked = true;
 
-                BottomToolStrip.BackColor = Color.FromArgb(240, 240, 240);
-                BottomToolStrip.ForeColor = SystemColors.WindowText;*/
+                standardBackground = Color.FromArgb(0, 0, 0);
+                standardForeground = Color.White;
+                standardLineBackground = Color.FromArgb(30, 30, 30);
+                standardLineForeground = Color.LightGray;
+            }
+
+            foreach (NotepadPage npPage in notepadPages)
+            {
+                npPage.SetTabColours(standardForeground, standardBackground);
+                npPage.SetNotepadColours(standardForeground, standardBackground, standardLineForeground, standardLineBackground);
+            }
+        }
+
+        private void SetEncodingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (sender == ANSIToolStripMenuItem)
+            {
+                notepadPages[TabbedNotepad.SelectedIndex].Encoding = Encoding.Default;
+                ANSIToolStripMenuItem.Checked = true;
+                ASCIIToolStripMenuItem.Checked = false;
+                UTF8ToolStripMenuItem.Checked = false;
+            }
+            else if (sender == ASCIIToolStripMenuItem)
+            {
+                notepadPages[TabbedNotepad.SelectedIndex].Encoding = Encoding.ASCII;
+                ANSIToolStripMenuItem.Checked = false;
+                ASCIIToolStripMenuItem.Checked = true;
+                UTF8ToolStripMenuItem.Checked = false;
+            }
+            else if (sender == UTF8ToolStripMenuItem)
+            {
+                notepadPages[TabbedNotepad.SelectedIndex].Encoding = Encoding.UTF8;
+                ANSIToolStripMenuItem.Checked = false;
+                ASCIIToolStripMenuItem.Checked = false;
+                UTF8ToolStripMenuItem.Checked = true;
             }
         }
 
@@ -364,6 +398,16 @@ namespace SimpleNotepad
                     TabbedNotepad.Refresh();
                     notepadPages[TabbedNotepad.SelectedIndex].Focus();
                 }
+
+                EncodingLabel.Text = notepadPages[TabbedNotepad.SelectedIndex].EncodingString.ToUpper();
+
+                if (notepadPages[TabbedNotepad.SelectedIndex].Encoding == Encoding.Default && !ANSIToolStripMenuItem.Checked)
+                    SetEncodingToolStripMenuItem_Click(ANSIToolStripMenuItem, e);
+                else if (notepadPages[TabbedNotepad.SelectedIndex].Encoding == Encoding.ASCII && !ASCIIToolStripMenuItem.Checked)
+                    SetEncodingToolStripMenuItem_Click(ASCIIToolStripMenuItem, e);
+                else if (notepadPages[TabbedNotepad.SelectedIndex].Encoding == Encoding.UTF8 && !UTF8ToolStripMenuItem.Checked)
+                    SetEncodingToolStripMenuItem_Click(UTF8ToolStripMenuItem, e);
+
             }
             catch { }
         }
@@ -380,5 +424,7 @@ namespace SimpleNotepad
 
 
         #endregion
+
+        
     }
 }
