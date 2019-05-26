@@ -225,7 +225,7 @@ namespace SimpleNotepad
                 _fileName = openFileDiag.SafeFileName;
                 _filePath = openFileDiag.FileName;
                 TabTitle = _fileName;
-                TabToolTip = _fileName;
+                TabToolTip = _filePath;
 
                 _tabControl.Refresh();
 

@@ -354,6 +354,7 @@
             this.TabbedNotepad.Name = "TabbedNotepad";
             this.TabbedNotepad.Padding = new System.Drawing.Point(0, 0);
             this.TabbedNotepad.SelectedIndex = 0;
+            this.TabbedNotepad.ShowToolTips = true;
             this.TabbedNotepad.Size = new System.Drawing.Size(800, 376);
             this.TabbedNotepad.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.TabbedNotepad.TabIndex = 6;

@@ -155,15 +155,20 @@ namespace SimpleNotepad
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NotepadPage notepadPage;
+            string oldTabFileName = "";
 
             if (notepadPages.Count > 0 && !String.IsNullOrWhiteSpace(notepadPages[notepadPages.Count - 1].Text))
-                notepadPage = new NotepadPage(ref TabbedNotepad, GetNewFileName(), _globalFont);
+                notepadPage = new NotepadPage(ref TabbedNotepad, "", _globalFont);
             else
+            {
+                oldTabFileName = notepadPages[notepadPages.Count - 1].FileName;
                 notepadPage = notepadPages[notepadPages.Count - 1];
+            }
 
             bool opened = notepadPage.Open();
             if (opened)
             {
+                if (!String.IsNullOrWhiteSpace(oldTabFileName)) tabFileNames.Remove(oldTabFileName);
                 notepadPages.Add(notepadPage);
             }
         }
