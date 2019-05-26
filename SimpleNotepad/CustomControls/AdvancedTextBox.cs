@@ -222,7 +222,7 @@ namespace SimpleNotepad.CustomControls
 
         private void MainTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (MainTextBox.Text == "") UpdateLineNumbers();
+            UpdateLineNumbers();
 
             Saved = DoesCurrentTextEqualSnapshot();
         }
@@ -243,7 +243,7 @@ namespace SimpleNotepad.CustomControls
         private void MainTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             RichTextBox rtb = (RichTextBox)sender;
-            if (e.KeyCode == Keys.Space)
+            if (e.KeyCode == Keys.Space || e.KeyCode == Keys.Tab)
             {
                 this.SuspendLayout();
                 rtb.Undo();
