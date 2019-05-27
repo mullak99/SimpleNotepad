@@ -13,18 +13,20 @@ namespace SimpleNotepad
         private TabPage _tabPage;
         private AdvancedTextBox _advandedTextBox;
         private Encoding _textEncoding = Encoding.UTF8;
+        private Theme _theme = null;
 
         private string _fileName, _filePath;
         private bool _switchToNewTab;
 
         private const int MaxTabTitleLength = 11;
 
-        public NotepadPage(ref TabControl tabControl, string fileName, Font font = null, bool switchToNewTab = true, string filePath = null)
+        public NotepadPage(ref TabControl tabControl, string fileName, Font font = null, Theme theme = null, bool switchToNewTab = true, string filePath = null)
         {
             _tabControl = tabControl;
             _fileName = fileName;
             _filePath = filePath;
             _switchToNewTab = switchToNewTab;
+            _theme = theme;
 
             _advandedTextBox = new AdvancedTextBox();
             _advandedTextBox.Dock = DockStyle.Fill;
@@ -34,7 +36,7 @@ namespace SimpleNotepad
             _tabPage = new TabPage();
 
             if (_fileName.Length > (MaxTabTitleLength + 3))
-                _tabPage.Text = _fileName.Substring(0, MaxTabTitleLength).TrimEnd(' ') + "...";
+                _tabPage.Text = _fileName.Substring(0, MaxTabTitleLength).TrimEnd(' ', '.') + "...";
             else
                 _tabPage.Text = _fileName;
 
@@ -42,6 +44,8 @@ namespace SimpleNotepad
                 _tabPage.ToolTipText = _filePath;
             else
                 _tabPage.ToolTipText = _fileName;
+
+            if (theme != null) ApplyTheme();
 
             _tabPage.Controls.Add(_advandedTextBox);
 
@@ -52,29 +56,27 @@ namespace SimpleNotepad
             Focus();
         }
 
-        public void SetTabColours(Color tabForeColour, Color tabBackColour)
+        public void ApplyTheme()
         {
-            _tabPage.ForeColor = tabForeColour;
-            _tabPage.BackColor = tabBackColour;
+            if (_theme != null)
+            {
+                _tabPage.ForeColor = _theme.StandardTextColor;
+                _tabPage.BackColor = _theme.StandardBackgroundColor;
+
+                _advandedTextBox.ForeColor = _theme.StandardTextColor;
+                _advandedTextBox.BackColor = _theme.StandardBackgroundColor;
+
+                _advandedTextBox.LineNumberForeColor = _theme.AltTextColor;
+                _advandedTextBox.LineNumberBackColor = _theme.AltBackgroundColor;
+            }
+            else ResetTheme();
         }
 
-        public void ResetTabColours()
+        public void ResetTheme()
         {
             _tabPage.ForeColor = SystemColors.WindowText;
             _tabPage.BackColor = SystemColors.Window;
-        }
 
-        public void SetNotepadColours(Color textBoxForeColour, Color textBoxBackColour, Color lineNumForeColour, Color lineNumBackColour)
-        {
-            _advandedTextBox.ForeColor = textBoxForeColour;
-            _advandedTextBox.BackColor = textBoxBackColour;
-
-            _advandedTextBox.LineNumberForeColor = lineNumForeColour;
-            _advandedTextBox.LineNumberBackColor = lineNumBackColour;
-        }
-
-        public void ResetNotepadColours()
-        {
             _advandedTextBox.ForeColor = SystemColors.WindowText;
             _advandedTextBox.BackColor = SystemColors.Window;
 
@@ -99,6 +101,12 @@ namespace SimpleNotepad
             _advandedTextBox.Redo();
         }
 
+        public Theme Theme
+        {
+            get { return _theme; }
+            set { _theme = value; }
+        }
+
         public string FileName
         {
             get { return _fileName; }
@@ -118,7 +126,7 @@ namespace SimpleNotepad
             set
             {
                 if (value.Length > (MaxTabTitleLength + 3))
-                    _tabPage.Text = value.Substring(0, MaxTabTitleLength).TrimEnd(' ') + "...";
+                    _tabPage.Text = value.Substring(0, MaxTabTitleLength).TrimEnd(' ', '.') + "...";
                 else
                     _tabPage.Text = value;
             }
@@ -243,6 +251,43 @@ namespace SimpleNotepad
                 return true;
             }
             return false;
+        }
+    }
+
+    public class Theme
+    {
+        private Color _standardText, _standardBack, _altText, _altBack;
+
+        public Theme(Color StandardTextColor, Color StandardBackgroundColor, Color AltTextColor, Color AltBackgroundColor)
+        {
+            _standardText = StandardTextColor;
+            _standardBack = StandardBackgroundColor;
+            _altText = AltTextColor;
+            _altBack = AltBackgroundColor;
+        }
+
+        public Color StandardTextColor
+        {
+            get { return _standardText; }
+            set { _standardText = value; }
+        }
+
+        public Color StandardBackgroundColor
+        {
+            get { return _standardBack; }
+            set { _standardBack = value; }
+        }
+
+        public Color AltTextColor
+        {
+            get { return _altText; }
+            set { _altText = value; }
+        }
+
+        public Color AltBackgroundColor
+        {
+            get { return _altBack; }
+            set { _altBack = value; }
         }
     }
 }

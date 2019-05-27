@@ -180,13 +180,11 @@ namespace SimpleNotepad.CustomControls
 
             if (MainTextBox.Lines.Length > 1)
             {
-                
                 for (int i = firstLine; i <= lastLine + 1; i++)
                 {
                     int lineNum = (i + 1);
                     if (lineNum <= Lines.Length) LineNumbers.Text += (i + 1) + "\n";
                 }
-
             }
             else LineNumbers.Text += 1 + "\n";
         }
