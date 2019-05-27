@@ -358,8 +358,13 @@ namespace SimpleNotepad
             {
                 if (TabbedNotepad.TabCount == 0) NewToolStripMenuItem_Click(sender, e);
 
-                TextLengthLabel.Text = "Length: " + notepadPages[TabbedNotepad.SelectedIndex].Text.Length;
-                LineTotalLabel.Text = "Lines: " + notepadPages[TabbedNotepad.SelectedIndex].Lines.Length;
+                int textLen = notepadPages[TabbedNotepad.SelectedIndex].Text.Length;
+                int lineLen = notepadPages[TabbedNotepad.SelectedIndex].Lines.Length;
+
+                TextLengthLabel.Text = "Length: " + textLen;
+
+                if (lineLen > 0) LineTotalLabel.Text = "Lines: " + lineLen;
+                else LineTotalLabel.Text = "Lines: 1";
 
                 string TabTitle, TabToolTip;
                 if (notepadPages[TabbedNotepad.SelectedIndex].Saved)
